@@ -3,18 +3,22 @@
 {% block title %}Hello HomeController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {# templates/components/about.html.twig #}
+    <section class="container my-5">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <img src="/img/progress.webp" alt="Over Progress" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-md-6">
+                <h2>Over Progress</h2>
+                <p>Progress is jouw ultieme fitnesspartner! Met ons platform houd je eenvoudig je trainingen bij, stel je doelen en volg je jouw vooruitgang met gedetailleerde statistieken. Of je nu net begint of een ervaren sporter bent, wij helpen je om sterker en fitter te worden.</p>
+                <p>Sluit je aan bij onze community en bereik je fitnessdoelen sneller dan ooit!</p>
+                <a href="" class="btn btn-primary">Bekijk trainingen</a>
+            </div>
+        </div>
+    </section>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/Robert/Documents/GitHub/Progress/progress/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>C:/Users/Robert/Documents/GitHub/Progress/progress/templates/home/index.html.twig</code></li>
-    </ul>
 </div>
 {% endblock %}
