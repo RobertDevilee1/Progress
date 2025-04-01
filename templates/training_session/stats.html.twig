@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Trainingsstatistieken{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2 class="mt-4">Trainingsstatistieken</h2>
+        <canvas id="trainingChart"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch("{{ path('api_training_sessions') }}")  // Haal de JSON-data op
+                .then(response => response.json())
+                .then(data => {
+                    const labels = data.map(session => session.date);
+                    const weights = data.map(session => session.weight);
+                    const trainings = data.map(session => session.training);
+
+                    const ctx = document.getElementById("trainingChart").getContext("2d");
+                    new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: "Gewicht per training",
+                                data: weights,
+                                borderColor: "blue",
+                                borderWidth: 2,
+                                fill: false,
+                                pointBackgroundColor: "red",
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: true
+                                }
+                            },
+                            scales: {
+                                x: { title: { display: true, text: "Datum" } },
+                                y: { title: { display: true, text: "Gewicht (kg)" } }
+                            }
+                        }
+                    });
+                })
+                .catch(error => console.error("Error loading data:", error));
+        });
+    </script>
+{% endblock %}

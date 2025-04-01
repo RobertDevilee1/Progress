@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -38,6 +40,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
+
+    /**
+     * @var Collection<int, TrainingSession>
+     */
+    #[ORM\OneToMany(targetEntity: TrainingSession::class, mappedBy: 'user')]
+    private Collection $trainingSessions;
+
+    public function __construct()
+    {
+        $this->trainingSessions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -134,6 +147,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TrainingSession>
+     */
+    public function getTrainingSessions(): Collection
+    {
+        return $this->trainingSessions;
+    }
+
+    public function addTrainingSession(TrainingSession $trainingSession): static
+    {
+        if (!$this->trainingSessions->contains($trainingSession)) {
+            $this->trainingSessions->add($trainingSession);
+            $trainingSession->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrainingSession(TrainingSession $trainingSession): static
+    {
+        if ($this->trainingSessions->removeElement($trainingSession)) {
+            // set the owning side to null (unless already changed)
+            if ($trainingSession->getUser() === $this) {
+                $trainingSession->setUser(null);
+            }
+        }
 
         return $this;
     }
