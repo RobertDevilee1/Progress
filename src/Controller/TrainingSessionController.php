@@ -10,6 +10,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class TrainingSessionController extends AbstractController
 {
@@ -49,6 +51,13 @@ class TrainingSessionController extends AbstractController
 
         return new JsonResponse($data);
     }
+
+    #[Route('/training/chart', name: 'app_training_chart')]
+    public function trainingChart(): Response
+    {
+        return $this->render('training_session/stats.html.twig');
+    }
+
 
 }
 

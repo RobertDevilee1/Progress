@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            fetch("{{ path('api_training_sessions') }}")  // Haal de JSON-data op
+            fetch("{{ path('api_trainings') }}")// Haal de JSON-data op
                 .then(response => response.json())
                 .then(data => {
                     const labels = data.map(session => session.date);
