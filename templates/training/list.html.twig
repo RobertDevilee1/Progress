@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Alle Trainingen{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h2>Overzicht van trainingen</h2>
+        <div class="row">
+            {% for training in trainings %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+{#                        <img src="{{ asset('uploads/training_images/' ~ training.imageFilename) }}" class="card-img-top" alt="{{ training.name }}">#}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ training.name }}</h5>
+                            <a href="{{ path('app_training_fill', {'id': training.id}) }}" class="btn btn-success">Training invullen</a>
+                            <a href="{{ path('app_training_chart_by_id', {'id': training.id}) }}" class="btn btn-primary">Bekijk grafiek</a>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>Geen trainingen gevonden.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

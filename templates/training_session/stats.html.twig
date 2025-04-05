@@ -1,22 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Trainingsstatistieken{% endblock %}
+{% block title %}Grafiek voor {{ training.name }}{% endblock %}
+
 
 {% block body %}
-    <div class="container">
-        <h2 class="mt-4">Trainingsstatistieken</h2>
+    <div class="container mt-4">
+        <h2>Voortgang: {{ training.name }}</h2>
         <canvas id="trainingChart"></canvas>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            fetch("{{ path('api_trainings') }}")// Haal de JSON-data op
+            fetch("/api/training/{{ training.id }}/sessions")
                 .then(response => response.json())
                 .then(data => {
+                    data.sort((a, b) => new Date(a.date) - new Date(b.date));
+
                     const labels = data.map(session => session.date);
                     const weights = data.map(session => session.weight);
-                    const trainings = data.map(session => session.training);
 
                     const ctx = document.getElementById("trainingChart").getContext("2d");
                     new Chart(ctx, {
@@ -40,8 +42,17 @@
                                 }
                             },
                             scales: {
-                                x: { title: { display: true, text: "Datum" } },
-                                y: { title: { display: true, text: "Gewicht (kg)" } }
+                                x: {
+                                    title: { display: true, text: "Datum" },
+                                    ticks: {
+                                        autoSkip: false,
+                                        maxRotation: 45,
+                                        minRotation: 45,
+                                    }
+                                },
+                                y: {
+                                    title: { display: true, text: "Gewicht (kg)" }
+                                }
                             }
                         }
                     });
@@ -49,4 +60,5 @@
                 .catch(error => console.error("Error loading data:", error));
         });
     </script>
+
 {% endblock %}

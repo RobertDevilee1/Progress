@@ -47,6 +47,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: TrainingSession::class, mappedBy: 'user')]
     private Collection $trainingSessions;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $bodyWeight = null;
+
     public function __construct()
     {
         $this->trainingSessions = new ArrayCollection();
@@ -178,6 +181,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             }
         }
 
+        return $this;
+    }
+
+
+    public function getBodyWeight(): ?float
+    {
+        return $this->bodyWeight;
+    }
+
+    public function setBodyWeight(?float $bodyWeight): self
+    {
+        $this->bodyWeight = $bodyWeight;
         return $this;
     }
 }
