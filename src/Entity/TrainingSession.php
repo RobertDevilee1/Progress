@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TrainingSessionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -31,6 +33,17 @@ class TrainingSession
 
     #[ORM\Column]
     private ?float $weight = null;
+
+    /**
+     * @var Collection<int, Trophy>
+     */
+    #[ORM\OneToMany(targetEntity: Trophy::class, mappedBy: 'trainingSession')]
+    private Collection $trophies;
+
+    public function __construct()
+    {
+        $this->trophies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,6 +118,36 @@ class TrainingSession
     public function setWeight(float $weight): static
     {
         $this->weight = $weight;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trophy>
+     */
+    public function getTrophies(): Collection
+    {
+        return $this->trophies;
+    }
+
+    public function addTrophy(Trophy $trophy): static
+    {
+        if (!$this->trophies->contains($trophy)) {
+            $this->trophies->add($trophy);
+            $trophy->setTrainingSession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrophy(Trophy $trophy): static
+    {
+        if ($this->trophies->removeElement($trophy)) {
+            // set the owning side to null (unless already changed)
+            if ($trophy->getTrainingSession() === $this) {
+                $trophy->setTrainingSession(null);
+            }
+        }
 
         return $this;
     }

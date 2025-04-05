@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Training;
 use App\Repository\TrainingRepository;
+use App\Service\TrophyService;
+
 
 
 class TrainingSessionController extends AbstractController
@@ -28,26 +30,26 @@ class TrainingSessionController extends AbstractController
     }
 
     #[Route('/training/new/{id}', name: 'app_training_fill')]
-    public function fillTraining(Request $request, Training $training, EntityManagerInterface $em): Response
+    public function fillTraining(Request $request, Training $training, EntityManagerInterface $em, TrophyRepository $trophyRepo): Response
     {
-        $session = new TrainingSession();
-        $session->setUser($this->getUser());
-        $session->setTraining($training); // zet training vooraf
-
-        $form = $this->createForm(TrainingSessionType::class, $session);
-        $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($session);
             $em->flush();
 
+            // 🏆 Trofee bij 100kg of meer
+            if ($session->getWeight() >= 100 && !$trophyRepo->userHasTrophy($this->getUser(), '100kg Benched')) {
+                $trophy = new Trophy();
+                $trophy->setName('100kg Benched');
+                $trophy->setDescription('Je hebt 100kg of meer gebenchd!');
+                $trophy->setUser($this->getUser());
+                $trophy->setTrainingSession($session);
+                $trophy->setImage('trophies/bench_100kg.png'); // zorg dat je deze afbeelding hebt
+                $em->persist($trophy);
+                $em->flush();
+            }
+
             return $this->redirectToRoute('app_training_chart_by_id', ['id' => $training->getId()]);
         }
-
-        return $this->render('training/new.html.twig', [
-            'form' => $form->createView(),
-            'training' => $training,
-        ]);
     }
 
     #[Route('/training/{id}/chart', name: 'app_training_chart_by_id')]

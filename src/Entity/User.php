@@ -50,9 +50,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?float $bodyWeight = null;
 
+    /**
+     * @var Collection<int, Trophy>
+     */
+    #[ORM\OneToMany(targetEntity: Trophy::class, mappedBy: 'user')]
+    private Collection $trophies;
+
     public function __construct()
     {
         $this->trainingSessions = new ArrayCollection();
+        $this->trophies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -193,6 +200,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBodyWeight(?float $bodyWeight): self
     {
         $this->bodyWeight = $bodyWeight;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Trophy>
+     */
+    public function getTrophies(): Collection
+    {
+        return $this->trophies;
+    }
+
+    public function addTrophy(Trophy $trophy): static
+    {
+        if (!$this->trophies->contains($trophy)) {
+            $this->trophies->add($trophy);
+            $trophy->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrophy(Trophy $trophy): static
+    {
+        if ($this->trophies->removeElement($trophy)) {
+            // set the owning side to null (unless already changed)
+            if ($trophy->getUser() === $this) {
+                $trophy->setUser(null);
+            }
+        }
+
         return $this;
     }
 }
