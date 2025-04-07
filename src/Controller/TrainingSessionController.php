@@ -53,6 +53,8 @@ class TrainingSessionController extends AbstractController
                 $trophy->setTrainingSession($session);
                 $trophy->setImage('trophies/tropfy.png');
                 $em->persist($trophy);
+                $this->addFlash('success', '🏆 Nieuwe trofee: 100kg Benched!');
+
             }
 
 
@@ -65,6 +67,8 @@ class TrainingSessionController extends AbstractController
                 $trophy->setTrainingSession($session);
                 $trophy->setImage('trophies/tropfy.png');
                 $em->persist($trophy);
+                $this->addFlash('success', '🏆 Nieuwe trofee: 60kg pull down!');
+
             }
 
 
@@ -77,6 +81,8 @@ class TrainingSessionController extends AbstractController
                 $trophy->setTrainingSession($session);
                 $trophy->setImage('trophies/tropfy.png');
                 $em->persist($trophy);
+                $this->addFlash('success', '🏆 Nieuwe trofee: 30kg curl!');
+
             }
 
 
@@ -89,6 +95,8 @@ class TrainingSessionController extends AbstractController
                 $trophy->setTrainingSession($session);
                 $trophy->setImage('trophies/tropfy.png');
                 $em->persist($trophy);
+                $this->addFlash('success', '🏆 Nieuwe trofee: 200kg leg press!');
+
             }
 
 
@@ -101,6 +109,8 @@ class TrainingSessionController extends AbstractController
                 $trophy->setTrainingSession($session);
                 $trophy->setImage('trophies/tropfy.png');
                 $em->persist($trophy);
+                $this->addFlash('success', '🏆 Nieuwe trofee: 100kg kuiten!');
+
             }
 
 
@@ -113,6 +123,8 @@ class TrainingSessionController extends AbstractController
                 $trophy->setTrainingSession($session);
                 $trophy->setImage('trophies/tropfy.png');
                 $em->persist($trophy);
+                $this->addFlash('success', '🏆 Nieuwe trofee: 20kg flying exersize!');
+
             }
 
 
@@ -125,6 +137,8 @@ class TrainingSessionController extends AbstractController
                 $trophy->setTrainingSession($session);
                 $trophy->setImage('trophies/tropfy.png');
                 $em->persist($trophy);
+                $this->addFlash('success', '🏆 Nieuwe trofee: 40kg push push!');
+
             }
 
             $em->flush();
