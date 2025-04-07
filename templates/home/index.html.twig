@@ -15,7 +15,9 @@
                 <h2>Over Progress</h2>
                 <p>Progress is jouw ultieme fitnesspartner! Met ons platform houd je eenvoudig je trainingen bij, stel je doelen en volg je jouw vooruitgang met gedetailleerde statistieken. Of je nu net begint of een ervaren sporter bent, wij helpen je om sterker en fitter te worden.</p>
                 <p>Sluit je aan bij onze community en bereik je fitnessdoelen sneller dan ooit!</p>
-                <a href="" class="btn btn-primary">Bekijk trainingen</a>
+                {% if app.user %}
+                <a href="{{ path('app_training_list') }}" class="btn btn-primary">Bekijk trainingen</a>
+                {% endif %}
             </div>
         </div>
     </section>

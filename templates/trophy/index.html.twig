@@ -10,7 +10,7 @@
             <div class="col-md-4">
                 <div class="card mb-3">
                     {% if trophy.image %}
-                        <img src="{{ asset(trophy.image) }}" class="card-img-top" alt="{{ trophy.name }}">
+                        <img src="{{ asset(trophy.image) }}" class="card-img-top w-50 h-50 " alt="{{ trophy.name }}">
                     {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ trophy.name }}</h5>
