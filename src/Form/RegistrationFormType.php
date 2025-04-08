@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -32,6 +33,14 @@ class RegistrationFormType extends AbstractType
                     new NotBlank([
                         'message' => 'Please enter your last name',
                     ]),
+                ],
+            ])
+            ->add('bodyWeight', NumberType::class, [
+                'required' => false,
+                'label' => 'Lichaamsgewicht (kg)',
+                'scale' => 1,
+                'attr' => [
+                    'placeholder' => 'Bijv. 70.5'
                 ],
             ])
             ->add('email')

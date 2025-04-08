@@ -32,12 +32,15 @@
                 {{ form_widget(registrationForm.plainPassword, { 'attr': {'class': 'form-control', 'placeholder': 'Kies een sterk wachtwoord'} }) }}
                 {{ form_errors(registrationForm.plainPassword) }}
             </div>
+            {{ form_row(registrationForm.bodyWeight) }}
 
             <div class="mb-3 form-check">
                 {{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
                 {{ form_label(registrationForm.agreeTerms, 'Ik ga akkoord met de algemene voorwaarden', { 'label_attr': {'class': 'form-check-label'} }) }}
                 {{ form_errors(registrationForm.agreeTerms) }}
             </div>
+
+
 
             <button type="submit" class="btn btn-success w-100">Account aanmaken</button>
 
