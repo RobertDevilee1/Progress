@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Registreren - Progress{% endblock %}
+
+{% block body %}
+    <div class="container d-flex justify-content-center align-items-center pt-5">
+        <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%;">
+            <h3 class="text-center mb-3">Registreren</h3>
+
+            {{ form_start(registrationForm) }}
+
+            <div class="mb-3">
+                {{ form_label(registrationForm.firstName, 'Voornaam') }}
+                {{ form_widget(registrationForm.firstName, { 'attr': {'class': 'form-control', 'placeholder': 'Voer je voornaam in'} }) }}
+                {{ form_errors(registrationForm.firstName) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(registrationForm.lastName, 'Achternaam') }}
+                {{ form_widget(registrationForm.lastName, { 'attr': {'class': 'form-control', 'placeholder': 'Voer je achternaam in'} }) }}
+                {{ form_errors(registrationForm.lastName) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(registrationForm.email, 'E-mail') }}
+                {{ form_widget(registrationForm.email, { 'attr': {'class': 'form-control', 'placeholder': 'Voer je e-mail in'} }) }}
+                {{ form_errors(registrationForm.email) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form_label(registrationForm.plainPassword, 'Wachtwoord') }}
+                {{ form_widget(registrationForm.plainPassword, { 'attr': {'class': 'form-control', 'placeholder': 'Kies een sterk wachtwoord'} }) }}
+                {{ form_errors(registrationForm.plainPassword) }}
+            </div>
+
+            <div class="mb-3 form-check">
+                {{ form_widget(registrationForm.agreeTerms, { 'attr': {'class': 'form-check-input'} }) }}
+                {{ form_label(registrationForm.agreeTerms, 'Ik ga akkoord met de algemene voorwaarden', { 'label_attr': {'class': 'form-check-label'} }) }}
+                {{ form_errors(registrationForm.agreeTerms) }}
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Account aanmaken</button>
+
+            {{ form_end(registrationForm) }}
+
+            <div class="text-center mt-3">
+                <a href="{{ path('app_login') }}">Heb je al een account? Log hier in</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

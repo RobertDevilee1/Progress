@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nieuwe Trainingssessie{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h2>Nieuwe Trainingssessie</h2>
+        <form method="post">
+            {{ form_start(form) }}
+
+            <div class="mb-3">
+                <label class="form-label">Kies een training</label>
+                {{ form_widget(form.training, { 'attr': {'class': 'form-select'} }) }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Gewicht (kg)</label>
+                {{ form_widget(form.weight, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Aantal sets</label>
+                {{ form_widget(form.sets, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Herhalingen per set</label>
+                {{ form_widget(form.reps, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Datum</label>
+                {{ form_widget(form.date, { 'attr': {'class': 'form-control'} }) }}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Opslaan</button>
+
+            {{ form_end(form) }}
+        </form>
+    </div>
+{% endblock %}

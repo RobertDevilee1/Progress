@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Jouw Rank Overzicht{% endblock %}
+
+{% block body %}
+    <h2 class="text-center pt-2 ">Jouw trainingssessies & ranks</h2>
+
+    <div class="row ms-3 me-3 mt-3">
+        {% for item in sessionsWithRanks %}
+            {% set session = item.session %}
+            {% set rank = item.rank %}
+
+            {% if session.training is not null and rank is not null %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm p-3">
+                        <h5 class="card-title">{{ session.training.name }}</h5>
+                        <p class="card-text">
+                            <strong>Datum:</strong> {{ session.date|date('d-m-Y') }}<br>
+                            <strong>Gewicht:</strong> {{ session.weight }} kg<br>
+                            <strong>Rank:</strong> <span class="badge bg-info">{{ rank }}</span>
+                        </p>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <p>Geen trainingssessies gevonden.</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}
