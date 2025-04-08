@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello TrophyController!{% endblock %}
+
+{% block body %}
+    <h2 class="text-center pb-4">🏆 Jouw trofeeën</h2>
+
+    <div class="row ms-3 me-3">
+        {% for trophy in trophies %}
+            <div class="col-md-4">
+                <div class="card mb-3">
+                    {% if trophy.image %}
+                        <img src="{{ asset(trophy.image) }}" class="card-img-top w-50 h-50 " alt="{{ trophy.name }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ trophy.name }}</h5>
+                        <p class="card-text">{{ trophy.description }}</p>
+                        <p class="card-text"><small>Behaald op {{ trophy.trainingSession.date|date('Y-m-d') }}</small></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}
