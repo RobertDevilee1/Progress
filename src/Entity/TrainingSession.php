@@ -40,6 +40,12 @@ class TrainingSession
     #[ORM\OneToMany(targetEntity: Trophy::class, mappedBy: 'trainingSession')]
     private Collection $trophies;
 
+    #[ORM\Column]
+    private ?bool $wasPresent = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $plannedDate = null;
+
     public function __construct()
     {
         $this->trophies = new ArrayCollection();
@@ -151,4 +157,28 @@ class TrainingSession
 
         return $this;
     }
+
+    public function isWasPresent(): ?bool
+    {
+        return $this->wasPresent;
+    }
+
+    public function setWasPresent(bool $wasPresent): static
+    {
+        $this->wasPresent = $wasPresent;
+
+        return $this;
+    }
+
+    public function getPlannedDate(): ?\DateTimeInterface
+    {
+        return $this->plannedDate;
+    }
+
+    public function setPlannedDate(?\DateTimeInterface $plannedDate): static
+    {
+        $this->plannedDate = $plannedDate;
+        return $this;
+    }
+
 }

@@ -28,6 +28,9 @@ class Training
     #[ORM\OneToMany(targetEntity: TrainingSession::class, mappedBy: 'training')]
     private Collection $trainingSessions;
 
+    #[ORM\Column]
+    private ?bool $isRugbyRelevant = null;
+
     public function __construct()
     {
         $this->trainingSessions = new ArrayCollection();
@@ -88,6 +91,18 @@ class Training
                 $trainingSession->setTraining(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isRugbyRelevant(): ?bool
+    {
+        return $this->isRugbyRelevant;
+    }
+
+    public function setIsRugbyRelevant(bool $isRugbyRelevant): static
+    {
+        $this->isRugbyRelevant = $isRugbyRelevant;
 
         return $this;
     }

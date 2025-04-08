@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}Trainingskalender{% endblock %}
+
+{% block body %}
+    <h1 class="mb-4">📅 Trainingskalender</h1>
+
+    <div id="calendar"></div>
+
+    <div id="trainingModal" style="display:none; position:fixed; top:20%; left:30%; background:#fff; padding:20px; border:1px solid #ccc; z-index:1000;">
+        <h3>Training op <span id="selectedDate"></span></h3>
+        <form method="post" action="{{ path('training_save_session') }}">
+            <input type="hidden" name="date" id="formDate">
+            <label><input type="checkbox" name="planned"> Gepland</label><br>
+            <label><input type="checkbox" name="done"> Ben gegaan</label><br><br>
+            <button type="submit">Opslaan</button>
+            <button type="button" onclick="document.getElementById('trainingModal').style.display='none'">Sluiten</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                selectable: true,
+                dateClick: function (info) {
+                    document.getElementById('formDate').value = info.dateStr;
+                    document.getElementById('selectedDate').innerText = info.dateStr;
+                    document.getElementById('trainingModal').style.display = 'block';
+                },
+                events: [
+                    {% for session in sessions %}
+                    {
+                        title: '{{ session.wasPresent ? "✅" : session.plannedDate ? "📌" : "❓" }}',
+                        start: '{{ session.plannedDate ? session.plannedDate|date("Y-m-d") : session.date|date("Y-m-d") }}',
+                        color: '{{ session.wasPresent ? "#4caf50" : "#ffc107" }}'
+                    },
+                    {% endfor %}
+                ]
+            });
+            calendar.render();
+        });
+    </script>
+{% endblock %}

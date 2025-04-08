@@ -15,6 +15,9 @@
                             <a href="{{ path('app_training_fill', {'id': training.id}) }}" class="btn btn-success">Training invullen</a>
                             <a href="{{ path('app_training_chart_by_id', {'id': training.id}) }}" class="btn btn-primary">Bekijk grafiek</a>
                         </div>
+                        {% if training.isRugbyRelevant %}
+                            <img src="{{ asset('img/rugbyball.png') }}" alt="Rugbybal" style="width: 24px;">
+                        {% endif %}
                     </div>
                 </div>
             {% else %}

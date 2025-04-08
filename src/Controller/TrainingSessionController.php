@@ -185,6 +185,31 @@ class TrainingSessionController extends AbstractController
         return new JsonResponse($data);
     }
 
+    #[Route('/training/save-session', name: 'training_save_session', methods: ['POST'])]
+    public function saveSession(Request $request, EntityManagerInterface $em): Response
+    {
+        $date = new \DateTime($request->request->get('date'));
+        $user = $this->getUser();
+
+        $existing = $em->getRepository(TrainingSession::class)->findOneBy([
+            'user' => $user,
+            'date' => $date
+        ]);
+
+        $session = $existing ?: new TrainingSession();
+        $session->setUser($user);
+        $session->setDate($date);
+        $session->setPlannedDate($request->request->getBoolean('planned') ? $date : null);
+        $session->setWasPresent($request->request->getBoolean('done'));
+
+        $em->persist($session);
+        $em->flush();
+
+        return $this->redirectToRoute('training_calendar');
+    }
+
+
+
 
 }
 
