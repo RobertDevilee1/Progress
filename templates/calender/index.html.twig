@@ -4,39 +4,86 @@
 {% block body %}
     <h1 class="mb-4">📅 Trainingskalender</h1>
 
-    <div id="calendar"></div>
+    <div id="calendar" class=" ms-5 me-5"></div>
 
-    <div id="trainingModal" style="display:none; position:fixed; top:20%; left:30%; background:#fff; padding:20px; border:1px solid #ccc; z-index:1000;">
-        <h3>Training op <span id="selectedDate"></span></h3>
+    <div id="modalOverlay" class="modal-overlay" style="display:none;"></div>
+
+    <div id="trainingModal" class="modal-custom" style="display:none;">
+        <h4 class="mb-3">Training op <span id="selectedDate" class="text-primary fw-bold"></span></h4>
         <form method="post" action="{{ path('training_save_session') }}">
             <input type="hidden" name="date" id="formDate">
-            <label><input type="checkbox" name="planned"> Gepland</label><br>
-            <label><input type="checkbox" name="done"> Ben gegaan</label><br><br>
-            <button type="submit">Opslaan</button>
-            <button type="button" onclick="document.getElementById('trainingModal').style.display='none'">Sluiten</button>
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="checkbox" name="planned" id="plannedCheckbox">
+                <label class="form-check-label" for="plannedCheckbox">Gepland</label>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" name="done" id="doneCheckbox">
+                <label class="form-check-label" for="doneCheckbox">Ben gegaan</label>
+            </div>
+            <button type="submit" class="btn btn-success me-2">Opslaan</button>
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Sluiten</button>
         </form>
     </div>
 
+    <style>
+        .modal-custom {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1051;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1050;
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <script>
+        function openModal(dateStr) {
+            document.getElementById('formDate').value = dateStr;
+            document.getElementById('selectedDate').innerText = dateStr;
+            document.getElementById('trainingModal').style.display = 'block';
+            document.getElementById('modalOverlay').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('trainingModal').style.display = 'none';
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 selectable: true,
                 dateClick: function (info) {
-                    document.getElementById('formDate').value = info.dateStr;
-                    document.getElementById('selectedDate').innerText = info.dateStr;
-                    document.getElementById('trainingModal').style.display = 'block';
+                    openModal(info.dateStr);
                 },
                 events: [
                     {% for session in sessions %}
+                    {% if session.wasPresent or session.plannedDate %}
                     {
-                        title: '{{ session.wasPresent ? "✅" : session.plannedDate ? "📌" : "❓" }}',
-                        start: '{{ session.plannedDate ? session.plannedDate|date("Y-m-d") : session.date|date("Y-m-d") }}',
-                        color: '{{ session.wasPresent ? "#4caf50" : "#ffc107" }}'
+                        title: '{{ session.wasPresent ? "✅ Training gedaan" : "📌 Gepland" }}',
+                        start: '{{ session.wasPresent ? session.date|date("Y-m-d") : session.plannedDate|date("Y-m-d") }}',
+                        color: '{{ session.wasPresent ? "#198754" : "#ffc107" }}'
                     },
+                    {% endif %}
                     {% endfor %}
+
                 ]
             });
             calendar.render();

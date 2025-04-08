@@ -19,13 +19,13 @@ class RankController extends AbstractController
         $sessionsWithRanks = [];
 
         foreach ($sessions as $session) {
-            $liftedWeight = $session->getWeight();
+            $weight = $session->getWeight();
             $bodyWeight = $user->getBodyWeight();
 
-            if ($liftedWeight !== null && $bodyWeight !== null) {
-                $rank = $this->calculateRank($liftedWeight, $bodyWeight);
-            } else {
-                $rank = 'Onbekend'; // Of iets anders, zoals null of "n.v.t."
+            $rank = null;
+
+            if ($weight !== null && $bodyWeight !== null) {
+                $rank = $this->calculateRank($weight, $bodyWeight);
             }
 
             $sessionsWithRanks[] = [
@@ -33,6 +33,7 @@ class RankController extends AbstractController
                 'rank' => $rank
             ];
         }
+
         return $this->render('rank/index.html.twig', [
             'sessionsWithRanks' => $sessionsWithRanks
         ]);
