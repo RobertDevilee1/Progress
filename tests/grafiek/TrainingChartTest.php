@@ -13,7 +13,7 @@ class TrainingChartTest extends WebTestCase
         $client = static::createClient();
         $client->loginUser($this->getExistingUser());
 
-        $client->request('GET', '/training/1/chart'); // Training met ID 1
+        $client->request('GET', '/training/1/chart');
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('canvas#trainingChart');
